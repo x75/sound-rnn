@@ -124,7 +124,8 @@ end
 print('starting optimisation')
 local losses = {}
 local optim_state = {learningRate = 0.001}
-for i = 1, params.max_epochs * input.num_batches do
+local num_iter = params.max_epochs * input.num_batches
+for i = 1, num_iter do
     local _, loss = optim.adagrad(feval, mod.params, optim_state)
 
     losses[#losses + 1] = loss[1]
@@ -141,7 +142,7 @@ for i = 1, params.max_epochs * input.num_batches do
 
     if i % params.print_every == 0 then
         print(string.format(
-            "iteration %4d, loss = %6.8f, gradnorm = %6.3e", i, loss[1], mod.grad_params:norm() / mod.params:norm()
+            "iteration %4d/%4d, loss = %6.8f, gradnorm = %6.3e", i, num_iter, loss[1], mod.grad_params:norm() / mod.params:norm()
         ))
     end
 
